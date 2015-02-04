@@ -10,10 +10,10 @@ echo "Install Python PIP"
 apt-get -y install python-pip python-dev build-essential
 
 echo "Install Virtualenv"
-pip install --upgrade virtualenv
+pip install virtualenv
 
 echo "Install Flask"
-pip install --upgrade flask
+pip install flask
 
 echo "Install Pymongo"
-pip install --upgrade pymongo
+pip install pymongo
