@@ -1,2 +1,2 @@
 # teamstar
-Team coordination dashboard applciation
+Team coordination dashboard application
