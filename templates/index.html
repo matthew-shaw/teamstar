@@ -2,31 +2,133 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 <br/>
-<form class="form-horizontal" action="/add" method="POST">
-  <div class="form-group">
-    <input class="form-control" id="name" name="name" placeholder="Name">
+<div class="row">
+  <div class="col-md-5">
+    <h3><i class="fa fa-users fa-fw"></i> Add Team</h3>
+    <form class="form-horizontal" action="/addteam" method="POST">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-users fa-fw"></i></div>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-users fa-fw"></i> Add</button>
+      </div>
+    </form>
   </div>
-  <div class="form-group">
-    <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add</button>
-  </div>
-</form>
 
-{% if data %}
-<h1><i class="fa fa-users"></i> Names:
-<ul>
-  {% for team in data %}
-  <li><i class="fa fa-user"></i> {{ team.name }} has database ID {{ team._id }}</li>
+  <div class="col-md-5 col-md-offset-2">
+    <h3><i class="fa fa-user fa-fw"></i> Add Member</h3>
+    <form class="form-horizontal" action="/addmember" method="POST">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-user fa-fw"></i></div>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></div>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-phone fa-fw"></i></div>
+          <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="Mobile">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-twitter fa-fw"></i></div>
+          <input type="text" class="form-control" id="twitter" name="twitter" placeholder="Twitter">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-slack fa-fw"></i></div>
+          <input type="text" class="form-control" id="slack" name="slack" placeholder="Slack">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-github fa-fw"></i></div>
+          <input type="text" class="form-control" id="github" name="github" placeholder="GitHub">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <label for="team" class="col-sm-2 control-label">Team</label>
+          <div class="col-sm-8 col-sm-offset-2">
+            <select class="form-control" name="team">
+              {% for team in teams%}
+              <option value="{{ team._id }}">{{ team.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-user fa-fw"></i> Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+<hr>
+{% if teams %}
+<h3><i class="fa fa-users fa-fw"></i> Teams: <span class="badge">{{ teams | length }}</span></h3>
+<div class="row">
+  {% for team in teams %}
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-user fa-fw"></i> {{ team.name }}</h3>
+      </div>
+      <div class="panel-body">
+
+      </div>
+    </div>
+  </div>
   {% endfor %}
-</ul></h1>
+</div>
+{% else %}
+<h3 class="text-danger"><i class="fa fa-exclamation-circle"></i> No teams</h3>
+{% endif %}
 
-<form class="form-horizontal" action="/deleteall" method="GET">
+
+{% if members %}
+<h3><i class="fa fa-user fa-fw"></i> Members: <span class="badge">{{ members | length }}</span></h3>
+<div class="row">
+  {% for member in members %}
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-user fa-fw"></i> {{ member.name }}</h3>
+      </div>
+      <div class="panel-body">
+        <h4>
+          <i class="fa fa-users fa-fw"></i> {{ member.team }}
+          {% if member.email %}<a href="mailto:{{ member.email }}"><i class="fa fa-envelope fa-fw"></i></a>{% endif %}
+          {% if member.mobile%}<a href="tel:{{ member.mobile }}"><i class="fa fa-phone fa-fw"></i></a>{% endif %}
+          {% if member.twitter %}<a href="https://twitter.com/{{ member.twitter}}"><i class="fa fa-twitter fa-fw"></i></a>{% endif %}
+          {% if member.slack %}<a href="https://landregistry.slack.com/messages/@{{ member.slack }}"><i class="fa fa-slack fa-fw"></i></a>{% endif %}
+          {% if member.github %}<a href="https://github.com/{{ member.github }}"><i class="fa fa-github fa-fw"></i></a>{% endif %}
+        </h4>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<form class="form-horizontal" action="/deleteallmembers" method="GET">
   <div class="form-group">
     <div>
       <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete All</button>
     </div>
   </div>
 </form>
+<hr>
 {% else %}
-<h1 class="text-danger"><i class="fa fa-exclamation-circle"></i> No data</h1>
+<h3 class="text-danger"><i class="fa fa-exclamation-circle"></i> No members</h3>
 {% endif %}
 {% endblock %}
