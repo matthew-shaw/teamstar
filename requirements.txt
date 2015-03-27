@@ -1,5 +1,2 @@
-echo "Install Flask"
-pip install flask
-
-echo "Install Pymongo"
-pip install pymongo
+Flask==0.10.1
+pymongo==2.8
