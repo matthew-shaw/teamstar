@@ -1,0 +1,5 @@
+echo "Install Flask"
+pip install flask
+
+echo "Install Pymongo"
+pip install pymongo

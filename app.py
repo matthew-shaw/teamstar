@@ -8,15 +8,32 @@ conn = pymongo.Connection()
 db = conn['mydb']
 coll = db['people']
 
-@app.route('/add', methods=['POST'])
-def add_team():
+@app.route('/addmember', methods=['POST'])
+def add_member():
     name = request.form.get("name")
-    coll.insert({"name": name})
+    email = request.form.get("email")
+    twitter = request.form.get("twitter")
+    slack = request.form.get("slack")
+    github = request.form.get("github")
+    mobile = request.form.get("mobile")
+    team = request.form.get("team")
+    db['people'].insert({"name": name, "email": email, "mobile": mobile, "twitter": twitter, "slack": slack, "github": github, "team": team})
     return redirect("/")
 
-@app.route("/deleteall", methods=['GET'])
-def deleteall():
-    coll.remove()
+@app.route('/addteam', methods=['POST'])
+def add_team():
+    name = request.form.get("name")
+    db['teams'].insert({"name": name})
+    return redirect("/")
+
+@app.route("/deleteallmembers", methods=['GET'])
+def deleteallmembers():
+    db['people'].remove()
+    return redirect ("/")
+
+@app.route("/deleteallteams", methods=['GET'])
+def deleteallteams():
+    db['teams'].remove()
     return redirect ("/")
 
 @app.route('/find/<name>', methods=["GET"])
@@ -26,8 +43,14 @@ def find_team(name):
 
 @app.route('/', methods=["GET"])
 def index():
-    result = [doc for doc in coll.find()]
-    return render_template('index.html', data=result)
+    teams = [doc for doc in db['teams'].find()]
+    members = [doc for doc in db['people'].find()]
+    return render_template('index.html', teams=teams, members=members)
+
+@app.route('/update', methods=['POST'])
+def update():
+    coll.update()
+    return result
 
 
 if __name__ == '__main__':
